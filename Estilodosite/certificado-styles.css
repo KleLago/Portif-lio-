@@ -27,7 +27,7 @@ html,body{
   line-height:1.6; overflow-x:hidden;
 }
 .wrap{ max-width:min(var(--wrap),96vw); margin:auto; padding:24px }
-a{ color:inherit; text-decoration:none }
+a{text-decoration:none }
 h1,h2,h3,h4{ margin:0 0 .5rem; line-height:1.25 }
 p{ margin:0 0 .75rem }
 img{ display:block; max-width:100%; height:auto }
@@ -155,7 +155,7 @@ html.nav-open .menu-toggle .line:nth-child(3){ transform:translateY(-7px) rotate
 .meta h3{ font-size:1rem; margin:0 }
 .meta .info{
   display:flex; gap:8px; flex-wrap:wrap;
-  color:var(--muted); font-size:.9rem;
+  color:var(--muted);
 }
 .meta .tag{
   max-width:100%;
@@ -228,5 +228,6 @@ footer{ padding:24px 0 32px; border-top:1px solid rgba(255,255,255,.08); color:v
 .actions .cta-btn:hover{
   background:rgba(255,255,255,.08);
 }
+
 
 
