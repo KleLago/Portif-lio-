@@ -431,3 +431,40 @@ body{padding-bottom:env(safe-area-inset-bottom,0)}
     max-width: 100%;
   }
 }
+/* === HOTFIX: menu mobile acima do header e backdrop clicável === */
+.menu-toggle{ position: relative; z-index: 1100; }           /* botão sempre por cima */
+
+.nav-backdrop{ z-index: 1000; }                               /* atrás do menu, à frente do header */
+
+/* Drawer do menu (mobile) precisa ficar acima do header */
+@media (max-width:768px){
+  .nav-links{
+    z-index: 1005;
+    /* garante altura cheia em todos os navegadores */
+    height: 100vh;
+    height: 100dvh;
+  }
+  /* redundante porém seguro: garante estado aberto */
+  body.menu-open .nav-links{
+    transform: translateX(0);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+  body.menu-open .nav-backdrop{
+    display: block;
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+/* === HOTFIX: modais sempre no topo === */
+.photo-modal,
+.svc-photo-modal{
+  z-index: 2000;          /* acima do backdrop e do header */
+  pointer-events: auto;   /* garante clique */
+}
+
+/* Em alguns temas, o header pode criar contexto de empilhamento; 
+   isso evita que ele cubra o drawer/backdrop por acidente */
+.site-header{ z-index: 100; }
