@@ -63,9 +63,7 @@ button{ font:inherit; color:inherit }
   background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.12)
 }
 .cta-btn{
-  background:linear-gradient(90deg,var(--c1),var(--c2));
-  font-weight:800; border-color:transparent; box-shadow:var(--shadow)
-}
+  font-weight:800; border-color:transparent;}
 
 /* --- hamburguer --- */
 .menu-toggle{ display:none; width:44px; height:44px; background:transparent; cursor:pointer; border:none; position:relative }
@@ -218,4 +216,5 @@ footer{ padding:24px 0 32px; border-top:1px solid rgba(255,255,255,.08); color:v
 }
 @media (max-width: 640px) {
   .thumb { aspect-ratio: 3/4; } /* celulares verticais */
+
 }
