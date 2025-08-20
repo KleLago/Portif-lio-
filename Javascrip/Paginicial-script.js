@@ -11,7 +11,7 @@ function openWhatsApp(opts) {
 }
 
 /* =================================================================
-   MENU MÓVEL OFF-CANVAS (robusto: funciona cedo ou tarde no DOM)
+   MENU MÓVEL OFF-CANVAS (versão corrigida)
    ================================================================= */
 (() => {
   let initialized = false;
@@ -19,50 +19,75 @@ function openWhatsApp(opts) {
   function bindMenu() {
     if (initialized) return true;
 
-    const header  = document.getElementById('siteHeader');
-    const nav     = document.getElementById('site-nav');
-    const btn     = document.querySelector('.menu-toggle');
-    if (!btn || !nav) return false; // ainda não existem no DOM
+    const header = document.getElementById('siteHeader') || document.body;
+    const nav    = document.getElementById('site-nav');
+    const btn    = document.querySelector('.menu-toggle');
 
+    // elementos obrigatórios
+    if (!btn || !nav) return false;
+
+    // backdrop garantido
     let backdrop = document.querySelector('.nav-backdrop');
     if (!backdrop) {
       backdrop = document.createElement('div');
       backdrop.className = 'nav-backdrop';
+      backdrop.setAttribute('aria-hidden', 'true');
       document.body.appendChild(backdrop);
     }
 
     const openMenu = () => {
       document.body.classList.add('menu-open');
-      header && header.classList.add('menu-open');
+      header.classList.add('menu-open');
       btn.setAttribute('aria-expanded', 'true');
+      nav.setAttribute('aria-hidden', 'false');
+      backdrop.setAttribute('aria-hidden', 'false');
     };
+
     const closeMenu = () => {
       document.body.classList.remove('menu-open');
-      header && header.classList.remove('menu-open');
+      header.classList.remove('menu-open');
       btn.setAttribute('aria-expanded', 'false');
+      nav.setAttribute('aria-hidden', 'true');
+      backdrop.setAttribute('aria-hidden', 'true');
     };
-    const isOpen = () => document.body.classList.contains('menu-open');
 
+    const toggleMenu = () => {
+      if (document.body.classList.contains('menu-open')) closeMenu();
+      else openMenu();
+    };
+
+    // evita bind duplo
     if (!btn.dataset.bound) {
-      btn.addEventListener('click', () => (isOpen() ? closeMenu() : openMenu()));
+      // clique + teclado no botão
+      btn.addEventListener('click', toggleMenu);
+      btn.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleMenu(); }
+      });
       btn.dataset.bound = '1';
     }
+
     if (!backdrop.dataset.bound) {
       backdrop.addEventListener('click', closeMenu);
       backdrop.dataset.bound = '1';
     }
+
     if (!nav.dataset.bound) {
+      // fechar ao clicar em qualquer link dentro do nav
       nav.addEventListener('click', (e) => {
         const link = e.target.closest('a');
         if (link) closeMenu();
       });
+      // acessibilidade: nav começa “escondido” em mobile
+      nav.setAttribute('aria-hidden', 'true');
       nav.dataset.bound = '1';
     }
 
+    // ESC para fechar
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && isOpen()) closeMenu();
-    }, { passive:true });
+      if (e.key === 'Escape' && document.body.classList.contains('menu-open')) closeMenu();
+    });
 
+    // ao voltar para desktop, fecha o drawer
     const mq = matchMedia('(min-width: 769px)');
     const onMQ = (ev) => { if (ev.matches) closeMenu(); };
     if (mq.addEventListener) mq.addEventListener('change', onMQ);
@@ -72,11 +97,13 @@ function openWhatsApp(opts) {
     return true;
   }
 
+  // tenta ligar imediatamente; se ainda não existirem os elementos, tenta de novo
   if (!bindMenu()) {
+    // caso o script esteja no <head> sem defer, garante ligar depois
     document.addEventListener('DOMContentLoaded', bindMenu, { once: true });
     let tries = 0;
     const id = setInterval(() => {
-      if (bindMenu() || ++tries > 30) clearInterval(id);
+      if (bindMenu() || ++tries > 40) clearInterval(id);
     }, 100);
   }
 })();
@@ -425,3 +452,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 })();
+
