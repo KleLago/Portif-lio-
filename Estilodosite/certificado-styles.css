@@ -79,7 +79,7 @@ html.nav-open .menu-toggle .line:nth-child(3){ transform:translateY(-7px) rotate
   .menu-toggle{ display:inline-block }
   .nav-links{
     position:fixed; top:0; right:0; bottom:0;
-    width:min(320px,88vw); background:#0a1b38;
+    width:min(320px,88vw);
     padding:88px 18px 18px;
     flex-direction:column; align-items:stretch;
     transform:translateX(100%); transition:.35s ease;
@@ -228,6 +228,7 @@ footer{ padding:24px 0 32px; border-top:1px solid rgba(255,255,255,.08); color:v
 .actions .cta-btn:hover{
   background:rgba(255,255,255,.08);
 }
+
 
 
 
