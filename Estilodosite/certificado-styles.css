@@ -6,14 +6,15 @@
   --glass:rgba(255,255,255,.06);
   --panel:rgba(255,255,255,.04);
   --radius:14px;
-  --wrap: 1100px;
-  --ratio-desktop: 16/9;
-  --ratio-tablet:  4/3;
-  --ratio-phone:   3/4;
-  --ratio: 16/9;
-  --shadow: 0 10px 28px rgba(0,0,0,.35);
+  --wrap:1100px;
+  --ratio-desktop:16/9;   /* mantidas se quiser reaproveitar */
+  --ratio-tablet: 4/3;
+  --ratio-phone:  3/4;
+  --shadow:0 10px 28px rgba(0,0,0,.35);
 }
-*{box-sizing:border-box}
+
+/* ===== Base ===== */
+*{ box-sizing:border-box }
 html,body{
   margin:0; color:var(--fg);
   font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
@@ -25,7 +26,7 @@ html,body{
   text-rendering:optimizeLegibility;
   line-height:1.6; overflow-x:hidden;
 }
-.wrap{ max-width:min(var(--wrap), 96vw); margin:auto; padding:24px }
+.wrap{ max-width:min(var(--wrap),96vw); margin:auto; padding:24px }
 a{ color:inherit; text-decoration:none }
 h1,h2,h3,h4{ margin:0 0 .5rem; line-height:1.25 }
 p{ margin:0 0 .75rem }
@@ -36,7 +37,7 @@ button{ font:inherit; color:inherit }
   *{ animation:none !important; transition:none !important }
 }
 
-/* --- header/menu --- */
+/* ===== Header / Menu ===== */
 .site-header{
   position:sticky; top:0; z-index:50;
   backdrop-filter: blur(10px);
@@ -62,10 +63,9 @@ button{ font:inherit; color:inherit }
 .nav-links a:hover, .nav-links button:hover{
   background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.12)
 }
-.cta-btn{
-  font-weight:800; border-color:transparent;}
+.cta-btn{ font-weight:800; border-color:transparent }
 
-/* --- hamburguer --- */
+/* ===== Hamburguer ===== */
 .menu-toggle{ display:none; width:44px; height:44px; background:transparent; cursor:pointer; border:none; position:relative }
 .menu-toggle .line{ position:absolute; left:10px; right:10px; height:2px; background:#fff; border-radius:2px; transition:.25s }
 .menu-toggle .line:nth-child(1){ top:14px }
@@ -88,14 +88,14 @@ html.nav-open .menu-toggle .line:nth-child(3){ transform:translateY(-7px) rotate
   html.nav-open .nav-links{ transform:translateX(0) }
 }
 
-/* --- hero --- */
-.hero { text-align:center; padding: 40px 0 16px }
+/* ===== Hero ===== */
+.hero{ text-align:center; padding:40px 0 16px }
 .hero h1{ font-size: clamp(1.6rem, 2.4vw + 1rem, 2.6rem) }
 .hero p{ color:var(--muted); max-width:780px; margin:10px auto 0 }
 
-/* --- tools --- */
+/* ===== Tools ===== */
 .tools{
-  display:grid; grid-template-columns: 1fr auto auto; gap:10px; align-items:center;
+  display:grid; grid-template-columns:1fr auto auto; gap:10px; align-items:center;
   background:var(--panel); border:1px solid rgba(255,255,255,.08);
   border-radius:12px; padding:12px; margin:16px 0 22px;
 }
@@ -110,65 +110,92 @@ html.nav-open .menu-toggle .line:nth-child(3){ transform:translateY(-7px) rotate
   padding:10px 12px; color:var(--fg); cursor:pointer
 }
 
-/* --- grade de cards --- */
+/* ===== Cards ===== */
 .cards-grid{
   display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap:16px
+  grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+  gap:16px;
 }
+
+/* Card flexível: conteúdo ocupa o miolo, ações colam no rodapé */
 .card{
+  display:flex; flex-direction:column; min-height:100%;
   background:rgba(255,255,255,.04);
   border:1px solid rgba(255,255,255,.08);
   border-radius:var(--radius);
   padding:12px;
-  transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease
+  transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
 }
 .card:hover{
   transform:translateY(-3px);
   box-shadow:0 12px 30px rgba(0,0,0,.35);
-  border-color:rgba(255,255,255,.16)
+  border-color:rgba(255,255,255,.16);
 }
+
+/* Thumbs normalizadas (evita “saltos” entre cards) */
 .thumb{
   background:linear-gradient(140deg, rgba(0,198,255,.2), rgba(0,102,255,.1));
   border-radius:10px; overflow:hidden; position:relative;
-  aspect-ratio: var(--ratio);
   display:grid; place-items:center;
+  aspect-ratio:16 / 9;           /* Desktop */
 }
-.thumb img{ width:100%; height:100%; object-fit:cover; object-position:center; }
+.thumb img{
+  width:100%; height:100%;
+  object-fit:cover; object-position:center; display:block;
+}
+/* Ajustes por breakpoint */
+@media (max-width:1024px){ .thumb{ aspect-ratio:4 / 3 } }
+@media (max-width:640px){  .thumb{ aspect-ratio:3 / 4 } }
 
-.meta{ padding:10px 6px 4px }
-.meta h3{ font-size:1rem; margin:0 0 6px }
-.meta .info{ display:flex; gap:8px; flex-wrap:wrap; color:var(--muted); font-size:.9rem }
-.meta .tag{ padding:3px 8px; border:1px solid rgba(255,255,255,.12); border-radius:999px }
+/* Meta / conteúdo */
+.meta{
+  display:flex; flex-direction:column; gap:8px;
+  padding:10px 6px 4px; flex:1;
+}
+.meta h3{ font-size:1rem; margin:0 }
+.meta .info{
+  display:flex; gap:8px; flex-wrap:wrap;
+  color:var(--muted); font-size:.9rem;
+}
+.meta .tag{
+  max-width:100%;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  padding:3px 8px; border:1px solid rgba(255,255,255,.12); border-radius:999px;
+}
 
-.actions{ margin-top:10px; display:flex; gap:8px; flex-wrap:wrap }
+/* Ações coladas no rodapé */
+.actions{
+  margin-top:auto;
+  display:flex; gap:8px; flex-wrap:wrap;
+}
 .btn{
   padding:9px 12px; border-radius:10px; border:1px solid rgba(255,255,255,.14);
-  background:rgba(255,255,255,.04); cursor:pointer; transition:.2s
+  background:rgba(255,255,255,.04); cursor:pointer; transition:.2s;
 }
 .btn:hover{ background:rgba(255,255,255,.08) }
 .btn.primary{
-  background:linear-gradient(90deg,var(--c1),var(--c2)); border-color:transparent; font-weight:700; box-shadow:var(--shadow)
+  background:linear-gradient(90deg,var(--c1),var(--c2)); border-color:transparent;
+  font-weight:700; box-shadow:var(--shadow);
 }
 
-/* --- lightbox --- */
+/* ===== Lightbox ===== */
 .lightbox{
   position:fixed; inset:0; display:none; place-items:center;
-  background: rgba(0,0,0,.65); backdrop-filter: blur(4px);
+  background:rgba(0,0,0,.65); backdrop-filter: blur(4px);
   z-index:60; padding:20px;
 }
 .lightbox.open{ display:grid }
 .lightbox-content{
-  max-width: min(1200px, 96vw); width:100%;
-  max-height: 88vh; border-radius:16px; overflow:hidden;
+  max-width:min(1200px,96vw); width:100%;
+  max-height:88vh; border-radius:16px; overflow:hidden;
   background:#0b1420; border:1px solid rgba(255,255,255,.12);
   box-shadow:0 40px 120px rgba(0,0,0,.6);
 }
 .lightbox-header{
   display:flex; justify-content:space-between; align-items:center;
-  padding:12px 14px; border-bottom:1px solid rgba(255,255,255,.08)
+  padding:12px 14px; border-bottom:1px solid rgba(255,255,255,.08);
 }
-.lightbox-body{ padding:0; }
+.lightbox-body{ padding:0 }
 .lightbox-body img{ width:100%; height:auto; display:block }
 .lightbox-title{ font-weight:700 }
 .lightbox-close{
@@ -176,45 +203,13 @@ html.nav-open .menu-toggle .line:nth-child(3){ transform:translateY(-7px) rotate
 }
 .lightbox-close:hover{ background:rgba(255,255,255,.08) }
 
-/* --- contato/rodapé --- */
-.contact-card {
-  background: rgba(255, 255, 255, 0.05);
-  padding: 1.4rem; border-radius: 14px;
-  max-width: 680px; width: 100%;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.2); margin: 28px auto 8px
+/* ===== Contato / Rodapé ===== */
+.contact-card{
+  background:rgba(255,255,255,.05);
+  padding:1.4rem; border-radius:14px;
+  max-width:680px; width:100%;
+  box-shadow:0 8px 20px rgba(0,0,0,0.2); margin:28px auto 8px;
 }
 footer{ padding:24px 0 32px; border-top:1px solid rgba(255,255,255,.08); color:var(--muted-2) }
 .footer-row{ display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap }
 
-/* --- proporção responsiva do thumb --- */
-@media (max-width: 1024px){ :root{ --ratio: var(--ratio-tablet) } }
-@media (max-width: 640px){ :root{ --ratio: var(--ratio-phone) } }
-
-.thumb {
-  background:linear-gradient(140deg, rgba(0,198,255,.2), rgba(0,102,255,.1));
-  border-radius:10px;
-  overflow:hidden;
-  position:relative;
-  display:grid;
-  place-items:center;
-
-  /* Esta linha garante responsividade perfeita */
-  aspect-ratio: 16/9;
-}
-
-/* Imagem dentro do thumb sempre centralizada */
-.thumb img {
-  width:100%;
-  height:100%;
-  object-fit:cover;   /* cobre todo o espaço */
-  object-position:center;
-}
-
-/* >>> NOVO: para telas menores, ajusta o aspecto sem distorcer */
-@media (max-width: 1024px) {
-  .thumb { aspect-ratio: 4/3; } /* tablets */
-}
-@media (max-width: 640px) {
-  .thumb { aspect-ratio: 3/4; } /* celulares verticais */
-
-}
