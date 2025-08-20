@@ -212,4 +212,21 @@ html.nav-open .menu-toggle .line:nth-child(3){ transform:translateY(-7px) rotate
 }
 footer{ padding:24px 0 32px; border-top:1px solid rgba(255,255,255,.08); color:var(--muted-2) }
 .footer-row{ display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap }
+/* Unificar estilo do "Baixar Certificado" dentro dos cards */
+.actions .cta-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:9px 12px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.04);
+  font-weight:700;
+  text-decoration:none;
+  transition:.2s;
+}
+.actions .cta-btn:hover{
+  background:rgba(255,255,255,.08);
+}
+
 
