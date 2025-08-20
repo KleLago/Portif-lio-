@@ -134,7 +134,7 @@ img{display:block;max-width:100%}
 
 /* hamburger + drawer */
 .menu-toggle{display:none;background:transparent;border:0;color:#fff;font-size:1.8rem;line-height:1;padding:8px 12px;cursor:pointer}
-.nav-backdrop{position:fixed;inset:0;z-index:98;background:rgba(0,0,0,.55);display:none;opacity:0;pointer-events:none;transition:opacity var(--t)}
+.nav-backdrop{inset:0;z-index:98;background:rgba(0,0,0,.55);display:none;opacity:0;pointer-events:none;transition:opacity var(--t)}
 
 @media (max-width:768px){
   .menu-toggle{display:block}
@@ -468,3 +468,4 @@ body{padding-bottom:env(safe-area-inset-bottom,0)}
 /* Em alguns temas, o header pode criar contexto de empilhamento; 
    isso evita que ele cubra o drawer/backdrop por acidente */
 .site-header{ z-index: 100; }
+
